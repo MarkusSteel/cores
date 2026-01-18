@@ -854,14 +854,10 @@ let me know?  http://forum.pjrc.com/forums/4-Suggestions-amp-Bug-Reports
   #define ENDPOINT6_CONFIG	ENDPOINT_RECEIVE_UNUSED + ENDPOINT_TRANSMIT_ISOCHRONOUS
 
 #elif defined(USB_MIDI2_AUDIO_RAWHID)
-  #define VENDOR_ID		0x16C0
-  #define PRODUCT_ID		0x0486
-  #define RAWHID_USAGE_PAGE	0xFFAB  // recommended: 0xFF00 to 0xFFFF
-  #define RAWHID_USAGE		0x0200  // recommended: 0x0100 to 0xFFFF
-  //#define VENDOR_ID		        0x16C0
-  //#define PRODUCT_ID		    0x0333
-  //#define RAWHID_USAGE_PAGE	    0xFF33  // recommended: 0xFF00 to 0xFFFF
-  //#define RAWHID_USAGE		    0x0333  // recommended: 0x0100 to 0xFFFF
+  #define VENDOR_ID		        0x16C0
+  #define PRODUCT_ID		    0x0486
+  #define RAWHID_USAGE_PAGE	    0xFF33  // recommended: 0xFF00 to 0xFFFF
+  #define RAWHID_USAGE		    0x0333  // recommended: 0x0100 to 0xFFFF
   #define MANUFACTURER_NAME	    {'T','e','e','n','s','y','d','u','i','n','o'}
   #define MANUFACTURER_NAME_LEN	11
   #define PRODUCT_NAME		    {'T','e','e','n','s','y',' ','M','I','D','I','x','1','6','/','A','u','d','i','o'}

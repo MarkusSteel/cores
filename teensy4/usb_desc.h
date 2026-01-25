@@ -868,7 +868,7 @@ let me know?  http://forum.pjrc.com/forums/4-Suggestions-amp-Bug-Reports
   
   #define RAWHID_INTERFACE      0	// RawHID
   #define RAWHID_TX_ENDPOINT    3
-  #define RAWHID_TX_SIZE        64
+  #define RAWHID_TX_SIZE        128
   #define RAWHID_TX_INTERVAL    1	 // TODO: is this ok for 480 Mbit speed
   #define RAWHID_RX_ENDPOINT    4
   #define RAWHID_RX_SIZE        64

@@ -598,10 +598,12 @@ let me know?  http://forum.pjrc.com/forums/4-Suggestions-amp-Bug-Reports
   #define NUM_INTERFACE		2
   #define RAWHID_INTERFACE      0	// RawHID
   #define RAWHID_TX_ENDPOINT    3
-  #define RAWHID_TX_SIZE        64
+  #define RAWHID_TX_SIZE_12     64
+  #define RAWHID_TX_SIZE_480    64
   #define RAWHID_TX_INTERVAL    1	 // TODO: is this ok for 480 Mbit speed
   #define RAWHID_RX_ENDPOINT    4
-  #define RAWHID_RX_SIZE        64
+  #define RAWHID_RX_SIZE_12     64
+  #define RAWHID_RX_SIZE_480    64
   #define RAWHID_RX_INTERVAL    1	 // TODO: is this ok for 480 Mbit speed
   #define SEREMU_INTERFACE      1	// Serial emulation
   #define SEREMU_TX_ENDPOINT    2
@@ -858,6 +860,9 @@ let me know?  http://forum.pjrc.com/forums/4-Suggestions-amp-Bug-Reports
   #define PRODUCT_ID		    0x0486
   #define RAWHID_USAGE_PAGE	    0xFF33  // recommended: 0xFF00 to 0xFFFF
   #define RAWHID_USAGE		    0x0333  // recommended: 0x0100 to 0xFFFF
+  #define DEVICE_CLASS		0xEF
+  #define DEVICE_SUBCLASS	0x02
+  #define DEVICE_PROTOCOL	0x01
   #define MANUFACTURER_NAME	    {'T','e','e','n','s','y','d','u','i','n','o'}
   #define MANUFACTURER_NAME_LEN	11
   #define PRODUCT_NAME		    {'T','e','e','n','s','y',' ','M','I','D','I','x','1','6','/','A','u','d','i','o'}
@@ -868,10 +873,12 @@ let me know?  http://forum.pjrc.com/forums/4-Suggestions-amp-Bug-Reports
   
   #define RAWHID_INTERFACE      0	// RawHID
   #define RAWHID_TX_ENDPOINT    3
-  #define RAWHID_TX_SIZE        128
+  #define RAWHID_TX_SIZE_12     64
+  #define RAWHID_TX_SIZE_480    128
   #define RAWHID_TX_INTERVAL    1	 // TODO: is this ok for 480 Mbit speed
   #define RAWHID_RX_ENDPOINT    4
-  #define RAWHID_RX_SIZE        64
+  #define RAWHID_RX_SIZE_12     64
+  #define RAWHID_RX_SIZE_480    64
   #define RAWHID_RX_INTERVAL    1	 // TODO: is this ok for 480 Mbit speed
 
   #define SEREMU_INTERFACE      1	// Serial emulation
@@ -945,10 +952,12 @@ let me know?  http://forum.pjrc.com/forums/4-Suggestions-amp-Bug-Reports
   #define MOUSE_INTERVAL        2
   #define RAWHID_INTERFACE      5	// RawHID
   #define RAWHID_TX_ENDPOINT    6
-  #define RAWHID_TX_SIZE        64
+  #define RAWHID_TX_SIZE_12     64
+  #define RAWHID_TX_SIZE_480    64
   #define RAWHID_TX_INTERVAL    1
   #define RAWHID_RX_ENDPOINT    6
-  #define RAWHID_RX_SIZE        64
+  #define RAWHID_RX_SIZE_12     64
+  #define RAWHID_RX_SIZE_480    64
   #define RAWHID_RX_INTERVAL    1
   #define FLIGHTSIM_INTERFACE	6	// Flight Sim Control
   #define FLIGHTSIM_TX_ENDPOINT	9

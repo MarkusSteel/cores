@@ -128,6 +128,9 @@ extern uint8_t usb_descriptor_buffer[]; // defined in usb_desc.c
 extern const uint8_t usb_config_descriptor_480[];
 extern const uint8_t usb_config_descriptor_12[];
 
+extern const uint8_t rawhid_report_desc_480[];
+extern const uint8_t rawhid_report_desc_12[];
+
 void (*usb_timer0_callback)(void) = NULL;
 void (*usb_timer1_callback)(void) = NULL;
 
@@ -593,7 +596,9 @@ static void endpoint0_setup(uint64_t setupdata)
 					memcpy(usb_descriptor_buffer, src, datalen);
 					usb_descriptor_buffer[1] = 7;
 				} else {
-					memcpy(usb_descriptor_buffer, list->addr, datalen);
+					const uint8_t *src = list->addr;
+					if (!usb_high_speed && (src == rawhid_report_desc_480)) src = rawhid_report_desc_12;
+					memcpy(usb_descriptor_buffer, src, datalen);
 				}
 				// prep transmit
 				arm_dcache_flush_delete(usb_descriptor_buffer, datalen);

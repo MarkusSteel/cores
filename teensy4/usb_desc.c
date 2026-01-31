@@ -493,7 +493,8 @@ const uint8_t rawhid_report_desc_480[] = {
         0x75, 0x08,                     //   report size = 8 bits
         0x15, 0x00,                     //   logical minimum = 0
         0x26, 0xFF, 0x00,               //   logical maximum = 255
-        0x95, RAWHID_TX_SIZE_480,       //   report count
+        0x96, LSB(RAWHID_TX_SIZE_480),  //   report count
+		      MSB(RAWHID_TX_SIZE_480),
         0x09, 0x01,                     //   usage
         0x81, 0x02,                     //   Input (array)
         0x95, RAWHID_RX_SIZE_480,       //   report count
@@ -509,7 +510,7 @@ const uint8_t rawhid_report_desc_12[] = {
         0x75, 0x08,                     //   report size = 8 bits
         0x15, 0x00,                     //   logical minimum = 0
         0x26, 0xFF, 0x00,               //   logical maximum = 255
-        0x95, RAWHID_TX_SIZE_12,        //   report count
+        0x96, RAWHID_TX_SIZE_12, 0,     //   report count
         0x09, 0x01,                     //   usage
         0x81, 0x02,                     //   Input (array)
         0x95, RAWHID_RX_SIZE_12,        //   report count
@@ -1244,14 +1245,15 @@ PROGMEM const uint8_t usb_config_descriptor_480[CONFIG_DESC_SIZE] = {
         0,                                      // bCountryCode
         1,                                      // bNumDescriptors
         0x22,                                   // bDescriptorType
-        LSB(sizeof(rawhid_report_desc_480)),        // wDescriptorLength
+        LSB(sizeof(rawhid_report_desc_480)),    // wDescriptorLength
         MSB(sizeof(rawhid_report_desc_480)),
         // endpoint descriptor, USB spec 9.6.6, page 269-271, Table 9-13
         7,                                      // bLength
         5,                                      // bDescriptorType
         RAWHID_TX_ENDPOINT | 0x80,              // bEndpointAddress
         0x03,                                   // bmAttributes (0x03=intr)
-        RAWHID_TX_SIZE_480, 0,                  // wMaxPacketSize
+        LSB(RAWHID_TX_SIZE_480 | (RAWHID_TX_TPMF << 11)), // wMaxPacketSize
+		MSB(RAWHID_TX_SIZE_480 | (RAWHID_TX_TPMF << 11)),                
         RAWHID_TX_INTERVAL,                     // bInterval
         // endpoint descriptor, USB spec 9.6.6, page 269-271, Table 9-13
         7,                                      // bLength
@@ -2831,7 +2833,7 @@ const usb_descriptor_list_t usb_descriptor_list[] = {
         {0x2100, JOYSTICK_INTERFACE, usb_config_descriptor_480+JOYSTICK_HID_DESC_OFFSET, 9},
 #endif
 #ifdef RAWHID_INTERFACE
-	{0x2200, RAWHID_INTERFACE, rawhid_report_desc_480, sizeof(rawhid_report_desc_12)},
+	{0x2200, RAWHID_INTERFACE, rawhid_report_desc_480, sizeof(rawhid_report_desc_480)},
 	{0x2100, RAWHID_INTERFACE, usb_config_descriptor_480+RAWHID_HID_DESC_OFFSET, 9},
 #endif
 #ifdef FLIGHTSIM_INTERFACE

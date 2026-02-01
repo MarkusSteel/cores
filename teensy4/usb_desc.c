@@ -493,11 +493,27 @@ const uint8_t rawhid_report_desc_480[] = {
         0x75, 0x08,                     //   report size = 8 bits
         0x15, 0x00,                     //   logical minimum = 0
         0x26, 0xFF, 0x00,               //   logical maximum = 255
-        0x96, LSB(RAWHID_TX_SIZE_480),  //   report count
-		      MSB(RAWHID_TX_SIZE_480),
+	//
+    // -------- Input Report 1 --------
+    //
+		0x85, 0x01,                     // Report ID 1
+		0x96, LSB(RAWHID_TX_RPT_SIZE1), //   report count
+		      MSB(RAWHID_TX_RPT_SIZE1),
         0x09, 0x01,                     //   usage
         0x81, 0x02,                     //   Input (array)
-        0x95, RAWHID_RX_SIZE_480,       //   report count
+	//
+    // -------- Input Report 2 --------
+    //
+		0x85, 0x02,                     // Report ID 2
+		0x96, LSB(RAWHID_TX_RPT_SIZE2), //   report count
+		      MSB(RAWHID_TX_RPT_SIZE2),
+        0x09, 0x01,                     //   usage
+        0x81, 0x02,                     //   Input (array)
+	//
+    // -------- Output Report --------
+    //
+		0x85, 0x03,                     // Report ID 3
+        0x95, RAWHID_RX_RPT_SIZE,       //   report count
         0x09, 0x02,                     //   usage
         0x91, 0x02,                     //   Output (array)
         0xC0                            // end collection

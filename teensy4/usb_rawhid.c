@@ -43,9 +43,9 @@ extern volatile uint8_t usb_high_speed;
 
 #define TX_NUM   4
 static transfer_t tx_transfer[TX_NUM] __attribute__ ((used, aligned(32)));
-DMAMEM static uint8_t txbuffer[RAWHID_TX_SIZE_480 * TX_NUM];
+DMAMEM static uint8_t tx_buffer[RAWHID_TX_SIZE_480 * TX_NUM];
 static uint8_t tx_head=0;
-uint16_t tx_packet_size=0;
+uint16_t tx_packet_size[2] = {0, 0};
 
 #define RX_NUM  4
 static transfer_t rx_transfer[RX_NUM] __attribute__ ((used, aligned(32)));
@@ -62,21 +62,30 @@ extern volatile uint8_t usb_configuration;
 
 void usb_rawhid_configure(void)
 {
+	uint16_t tx_endpoint_size=0;
+	uint16_t rx_endpoint_size=0;
+
 	printf("usb_rawhid_configure\n");
 	if (usb_high_speed) {
-		tx_packet_size = RAWHID_TX_SIZE_480;
-		rx_packet_size = RAWHID_RX_SIZE_480;
+		tx_packet_size[0] = RAWHID_TX_RPT_SIZE1;
+		tx_packet_size[1] = RAWHID_TX_RPT_SIZE2;
+		tx_endpoint_size  = RAWHID_TX_SIZE_480;
+		rx_packet_size    = RAWHID_RX_RPT_SIZE;
+		rx_endpoint_size  = RAWHID_RX_SIZE_480;
 	} else {
-		tx_packet_size = RAWHID_TX_SIZE_12;
-		rx_packet_size = RAWHID_RX_SIZE_12;
+		tx_packet_size[1] = RAWHID_TX_SIZE_12 -1;
+		tx_packet_size[0] = RAWHID_TX_SIZE_12 -1;
+		tx_endpoint_size  = RAWHID_TX_SIZE_12;
+		rx_packet_size    = RAWHID_RX_SIZE_12;
+		rx_endpoint_size  = RAWHID_RX_SIZE_12;
 	}
 	memset(tx_transfer, 0, sizeof(tx_transfer));
 	memset(rx_transfer, 0, sizeof(rx_transfer));
 	tx_head = 0;
 	rx_head = 0;
 	rx_tail = 0;
-	usb_config_tx(RAWHID_TX_ENDPOINT, tx_packet_size, 0, NULL);
-	usb_config_rx(RAWHID_RX_ENDPOINT, rx_packet_size, 0, rx_event);
+	usb_config_tx(RAWHID_TX_ENDPOINT, tx_endpoint_size, 0, NULL);
+	usb_config_rx(RAWHID_RX_ENDPOINT, rx_endpoint_size, 0, rx_event);
 	int i;
 	for (i=0; i < RX_NUM; i++) rx_queue_transfer(i);
 }
@@ -87,11 +96,11 @@ void usb_rawhid_configure(void)
 
 static void rx_queue_transfer(int i)
 {
-	void *buffer = rx_buffer + i * rx_packet_size;
-	arm_dcache_delete(buffer, rx_packet_size);
+	void *buffer = rx_buffer + i * RAWHID_RX_SIZE_480;
+	arm_dcache_delete(buffer, rx_packet_size +1);
 	//memset(buffer, )
 	NVIC_DISABLE_IRQ(IRQ_USB1);
-	usb_prepare_transfer(rx_transfer + i, buffer, rx_packet_size, i);
+	usb_prepare_transfer(rx_transfer + i, buffer, rx_packet_size +1, i);
 	usb_receive(RAWHID_RX_ENDPOINT, rx_transfer + i);
 	NVIC_ENABLE_IRQ(IRQ_USB1);
 }
@@ -125,12 +134,12 @@ int usb_rawhid_recv(void *buffer, uint32_t timeout)
 	uint32_t i = rx_list[tail];
 	rx_tail = tail;
 
-	memcpy(buffer,  rx_buffer + i * rx_packet_size, rx_packet_size);
+	memcpy(buffer,  rx_buffer + i * RAWHID_RX_SIZE_480, RAWHID_RX_SIZE_480);
 	rx_queue_transfer(i);
 	//memset(rx_transfer, 0, sizeof(rx_transfer));
 	//usb_prepare_transfer(rx_transfer + 0, rx_buffer, rx_packet_size, 0);
 	//usb_receive(RAWHID_RX_ENDPOINT, rx_transfer + 0);
-	return rx_packet_size;
+	return RAWHID_RX_SIZE_480;
 }
 
 int usb_rawhid_txfree(void)
@@ -141,13 +150,13 @@ int usb_rawhid_txfree(void)
 	
 	if (!(status & 0x80))
 	{
-		return tx_packet_size;
+		return 1;
 	}
 
 	return 0;
 }
 
-int usb_rawhid_send(const void *buffer, uint32_t timeout)
+int usb_rawhid_send(const void *buffer, uint8_t reportID, uint32_t timeout)
 {
 	transfer_t *xfer = tx_transfer + tx_head;
 	uint32_t wait_begin_at = systick_millis_count;
@@ -159,13 +168,15 @@ int usb_rawhid_send(const void *buffer, uint32_t timeout)
 		if (systick_millis_count - wait_begin_at > timeout) return 0;
 		yield();
 	}
-	uint8_t *txdata = txbuffer + (tx_head * tx_packet_size);
-	memcpy(txdata, buffer, tx_packet_size);
-	arm_dcache_flush_delete(txdata, tx_packet_size );
-	usb_prepare_transfer(xfer, txdata, tx_packet_size, 0);
+	uint8_t *txdata = tx_buffer + (tx_head * RAWHID_TX_SIZE_480);
+	txdata[0] = reportID;
+	uint16_t length = tx_packet_size[reportID -1];
+	memcpy(txdata +1, buffer, length);
+	arm_dcache_flush_delete(txdata, length +1);
+	usb_prepare_transfer(xfer, txdata, length +1, 0);
 	usb_transmit(RAWHID_TX_ENDPOINT, xfer);
 	if (++tx_head >= TX_NUM) tx_head = 0;
-	return tx_packet_size;
+	return length;
 }
 
 int usb_rawhid_available(void)

@@ -600,11 +600,14 @@ let me know?  http://forum.pjrc.com/forums/4-Suggestions-amp-Bug-Reports
   #define RAWHID_TX_ENDPOINT    3
   #define RAWHID_TX_SIZE_12     64
   #define RAWHID_TX_SIZE_480    64
+  #define RAWHID_TX_RPT_SIZE1   63
+  #define RAWHID_TX_RPT_SIZE2   63
   #define RAWHID_TX_TPMF        0
   #define RAWHID_TX_INTERVAL    1	 // TODO: is this ok for 480 Mbit speed
   #define RAWHID_RX_ENDPOINT    4
   #define RAWHID_RX_SIZE_12     64
   #define RAWHID_RX_SIZE_480    64
+  #define RAWHID_RX_RPT_SIZE    63
   #define RAWHID_RX_INTERVAL    1	 // TODO: is this ok for 480 Mbit speed
   #define SEREMU_INTERFACE      1	// Serial emulation
   #define SEREMU_TX_ENDPOINT    2
@@ -876,11 +879,14 @@ let me know?  http://forum.pjrc.com/forums/4-Suggestions-amp-Bug-Reports
   #define RAWHID_TX_ENDPOINT    3
   #define RAWHID_TX_SIZE_12     64
   #define RAWHID_TX_SIZE_480    1024
+  #define RAWHID_TX_RPT_SIZE1   1023
+  #define RAWHID_TX_RPT_SIZE2   63
   #define RAWHID_TX_TPMF        2
   #define RAWHID_TX_INTERVAL    1	 // TODO: is this ok for 480 Mbit speed
   #define RAWHID_RX_ENDPOINT    4
   #define RAWHID_RX_SIZE_12     64
   #define RAWHID_RX_SIZE_480    64
+  #define RAWHID_RX_RPT_SIZE    63
   #define RAWHID_RX_INTERVAL    1	 // TODO: is this ok for 480 Mbit speed
 
   #define SEREMU_INTERFACE      1	// Serial emulation
@@ -956,11 +962,14 @@ let me know?  http://forum.pjrc.com/forums/4-Suggestions-amp-Bug-Reports
   #define RAWHID_TX_ENDPOINT    6
   #define RAWHID_TX_SIZE_12     64
   #define RAWHID_TX_SIZE_480    64
+  #define RAWHID_TX_RPT_SIZE1   63
+  #define RAWHID_TX_RPT_SIZE2   63
   #define RAWHID_TX_TPMF        0
   #define RAWHID_TX_INTERVAL    1
   #define RAWHID_RX_ENDPOINT    6
   #define RAWHID_RX_SIZE_12     64
   #define RAWHID_RX_SIZE_480    64
+  #define RAWHID_RX_RPT_SIZE    63
   #define RAWHID_RX_INTERVAL    1
   #define FLIGHTSIM_INTERFACE	6	// Flight Sim Control
   #define FLIGHTSIM_TX_ENDPOINT	9

@@ -133,6 +133,20 @@ int usb_rawhid_recv(void *buffer, uint32_t timeout)
 	return rx_packet_size;
 }
 
+int usb_rawhid_txfree(void)
+{
+	transfer_t *xfer = tx_transfer + tx_head;
+
+	uint32_t status = usb_transfer_status(xfer);
+	
+	if (!(status & 0x80))
+	{
+		return tx_packet_size;
+	}
+
+	return 0;
+}
+
 int usb_rawhid_send(const void *buffer, uint32_t timeout)
 {
 	transfer_t *xfer = tx_transfer + tx_head;

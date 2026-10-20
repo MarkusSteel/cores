@@ -926,6 +926,75 @@ let me know?  http://forum.pjrc.com/forums/4-Suggestions-amp-Bug-Reports
   #define ENDPOINT6_CONFIG	ENDPOINT_RECEIVE_ISOCHRONOUS + ENDPOINT_TRANSMIT_ISOCHRONOUS
   #define ENDPOINT7_CONFIG	ENDPOINT_RECEIVE_UNUSED + ENDPOINT_TRANSMIT_ISOCHRONOUS
 
+#elif defined(USB_MIDI2_AUDIO_RAWHID_SERIAL)
+  #define VENDOR_ID		        0x16C0
+  #define PRODUCT_ID		    0x048A
+  #define RAWHID_USAGE_PAGE	    0xFF33  // recommended: 0xFF00 to 0xFFFF
+  #define RAWHID_USAGE		    0x0333  // recommended: 0x0100 to 0xFFFF
+  #define DEVICE_CLASS		0xEF
+  #define DEVICE_SUBCLASS	0x02
+  #define DEVICE_PROTOCOL	0x01
+  #define MANUFACTURER_NAME	    {'T','e','e','n','s','y','d','u','i','n','o'}
+  #define MANUFACTURER_NAME_LEN	11
+  #define PRODUCT_NAME		    {'T','e','e','n','s','y',' ','M','I','D','I','x','1','6','/','A','u','d','i','o'}
+  #define PRODUCT_NAME_LEN	    20
+  #define EP0_SIZE		        64
+  #define NUM_ENDPOINTS         10
+  #define NUM_INTERFACE		    7
+
+  #define CDC_IAD_DESCRIPTOR	1
+  #define CDC_STATUS_INTERFACE	0
+  #define CDC_DATA_INTERFACE	1	// Serial
+  #define CDC_ACM_ENDPOINT	2
+  #define CDC_RX_ENDPOINT       3
+  #define CDC_TX_ENDPOINT       3
+  #define CDC_ACM_SIZE          16
+  #define CDC_RX_SIZE_480       512
+  #define CDC_TX_SIZE_480       512
+  #define CDC_RX_SIZE_12        64
+  #define CDC_TX_SIZE_12        64
+  
+  #define RAWHID_INTERFACE      2	// RawHID
+  #define RAWHID_TX_ENDPOINT    4
+  #define RAWHID_TX_SIZE_12     64
+  #define RAWHID_TX_SIZE_480    1024
+  #define RAWHID_TX_RPT1_12     64
+  #define RAWHID_TX_RPT2_12     64
+  #define RAWHID_TX_RPT1_480    1023
+  #define RAWHID_TX_RPT2_480    63
+  #define RAWHID_TX_TPMF        2
+  #define RAWHID_TX_INTERVAL    1	 // TODO: is this ok for 480 Mbit speed
+  #define RAWHID_RX_ENDPOINT    5
+  #define RAWHID_RX_SIZE_12     64
+  #define RAWHID_RX_SIZE_480    64
+  #define RAWHID_RX_RPT_12      64
+  #define RAWHID_RX_RPT_480     63
+  #define RAWHID_RX_INTERVAL    1	 // TODO: is this ok for 480 Mbit speed
+
+  #define MIDI_INTERFACE        3	// MIDI
+  #define MIDI_NUM_CABLES       2
+  #define MIDI_TX_ENDPOINT      6
+  #define MIDI_TX_SIZE_12       64
+  #define MIDI_TX_SIZE_480      512
+  #define MIDI_RX_ENDPOINT      6
+  #define MIDI_RX_SIZE_12       64
+  #define MIDI_RX_SIZE_480      512
+
+  #define AUDIO_INTERFACE	    4	// Audio (uses 3 consecutive interfaces)
+  #define AUDIO_TX_ENDPOINT     7
+  #define AUDIO_TX_SIZE         180
+  #define AUDIO_RX_ENDPOINT     7
+  #define AUDIO_RX_SIZE         180
+  #define AUDIO_SYNC_ENDPOINT	8
+
+  #define ENDPOINT2_CONFIG	ENDPOINT_RECEIVE_UNUSED + ENDPOINT_TRANSMIT_INTERRUPT
+  #define ENDPOINT3_CONFIG	ENDPOINT_RECEIVE_INTERRUPT + ENDPOINT_TRANSMIT_INTERRUPT
+  #define ENDPOINT4_CONFIG	ENDPOINT_RECEIVE_UNUSED + ENDPOINT_TRANSMIT_INTERRUPT
+  #define ENDPOINT5_CONFIG	ENDPOINT_RECEIVE_INTERRUPT + ENDPOINT_TRANSMIT_UNUSED
+  #define ENDPOINT6_CONFIG	ENDPOINT_RECEIVE_BULK + ENDPOINT_TRANSMIT_BULK
+  #define ENDPOINT7_CONFIG	ENDPOINT_RECEIVE_ISOCHRONOUS + ENDPOINT_TRANSMIT_ISOCHRONOUS
+  #define ENDPOINT8_CONFIG	ENDPOINT_RECEIVE_UNUSED + ENDPOINT_TRANSMIT_ISOCHRONOUS
+
 #endif
 
 #ifdef USB_DESC_LIST_DEFINE
